@@ -18,8 +18,26 @@ data2025q1 <- read.csv("Budapest2025q1_final.csv")
 skim(data2025q1$ln_price)
 skim(data2025q2$ln_price)
 
-data2025q1$f_room_type
+table(data2025q1$f_room_type)
 data2025q2$f_room_type
+
+table(data2025q1$property_type)
+data2025q2$property_type
+
+library(psych)
+
+vars_desc <- data2025q1 %>%
+  dplyr::select(
+    ln_price,
+    ln_accommodates,
+    beds_n,
+    bathrooms_n,
+    p_host_response_rate,
+    kitchen,
+    number_of_reviews_n
+  )
+
+summary(vars_desc)
 
 #--------------------------------------Budapest 2025q1--------------------------
 #-----------------------------------OLS FUNCTION--------------------------------
