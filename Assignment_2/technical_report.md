@@ -1,16 +1,27 @@
-#### The main body of the work is available in pdf format in the Assignment 3 folder at this repository link: https://github.com/Anton21a/Machine-Learning.git
-
 ### Data Cleaning and Pre-processing  
 
-With the given specific of the assignment, the initial dataset was filtered to include only firms that were active in either 2012 or 2014. Thus, as an indicator of fast growing, the study employs the difference in value of the target variable between 2014 and 2012.
+With the given specific of the assignment, the initial dataset was filtered to include only firms that were active in either 2012 or 2014. Thus, as an indicator of fast growing, the study employs the difference in value of the target variable between 2014 and 2012. 
+
+As the first step of data wrangling, it was decided to set a survival indicator (status_alive) which is constructed based on positive sales values. The final sample was restricted to firms that were active in both years, eliminating entry and exit effects and ensuring that observed growth reflects within firm dynamics rather than firm turnover.
+
+A consistency check was applied to balance sheet variables as one of the main predictors for the built models. Firms exhibiting negative values in key asset components (intangibles, current assets, fixed assets) were flagged using a dedicated indicator. Negative values in these variables were moved to zero, and observations with invalid negative entries in variables that are theoretically non-negative (sales, assets, inventories, expenses) were removed from the sample before the following data wrangling.
 
 Firm age was computed based on the difference between the year and the founding year. Any negative values were set to zero. To get rid of outliers in target variable 'sales', its values were filtered by 10 million as upper-bandwidth limit and 1,000 as lower-bandwidth limit.
 
 Next, the industry classification (ind2) was recoded into broader categories under a new variable called ind2_cat. This involved grouping various codes into categories such as 20, 30, 40, and 60 based on NACE industry code ranking. Firms with unclassified or missing industry codes were excluded from further analysis. A binary variable indicating whether the firm belongs to manufacturing or service type of activity was then created for the subsequent classification task. 
 
-The engineering work was undertaken for variables which show lines from BS and P&L statements. A list of variables that should not be negative, such as sales, curr_assets, fixed_assets, inventories, etc. was used to filter out invalid observations, and these variables were subsequently transformed using the natural log (log1p()). The rest part of growth rate variables (such as profit or equity) were defined as a simple difference between values in 2014 and 2012, due to they could contain negative values. 
+The engineering work was undertaken for variables which show lines from BS and P&L statements. A list of variables that should not be negative, such as sales, curr_assets, fixed_assets, inventories, etc. was used to filter out invalid observations, and these variables were subsequently transformed using the natural log (log1p()). The rest part of growth rate variables (such as profit or equity) were defined as a simple difference between values in 2014 and 2012, due to they could contain negative values. Total assets were reconstructed as the sum of intangible assets, current assets, and fixed assets to ensure consistency across balance sheet components.
 
 Growth rates and changes in KPI were then analyzed. Dummy variables were created to capture positive growth, extreme increases (over 100%), and severe declines (greater than 50% drop) for each variable. These dummy variables were encoded as categorical factors with "yes" and "no" values. Filters were applied to remove extreme values in the change of profit, tax, and equity indicators to avoid outliers that could skew modeling.
+
+### Feature Engineering
+
+Profitability and equity related variables were scaled by firm size to improve comparability across firms. Specifically, profit, tax, and equity measures were normalized by total assets. To ensure consistency, all values for 2014 have been scaled using total assets measured in 2012, ensuring that changes reflect performance dynamics rather than effects related to size at a given point in time.
+
+Growth in strictly non-negative financial variables was measured using log diff between 2012 and 2014. For variables that may assume negative values, changes were defined as simple differences to avoid distortions from log transformations.
+
+Next, growth rates and changes in key performance indicators were analyzed. For each growth variable, three types of indicator variables were constructed: (i) a dummy variable reflecting positive growth, (ii) a dummy variable identifying extreme growth exceeding 100%, and (iii) a dummy variable indicating a significant decline of more than 50%. All dummy variables were coded as categorical factors with values of “yes” and “no” to account for non-linear effects in subsequent classification models. To prevent extreme values from having a disproportion impact on model estimates, observations with large changes in income, taxes, and equity were excluded using threshold rules. Sales growth was calculated based on log differences and expressed as a percentage growth rate. Based on this indicator, a binary rapid growth indicator was constructed, which was used as a target variable in the classification.
+
 
 **Descriptive Statistics**
 
