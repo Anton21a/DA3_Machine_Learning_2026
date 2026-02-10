@@ -56,7 +56,7 @@ ols_cv_rmse <- function(data, seed_val = 111) {
       ln_number_of_reviews + f_bathroom + f_minimum_nights,
     ln_price ~ property_type + f_room_type + ln_accommodates + ln_accommodates2 + ln_number_of_reviews +
       f_bathroom + beds_n + f_minimum_nights + refrigerator + microwave + wifi + smoke.alarm +
-      hot.water + essentials + dining.table + bed.linens 
+      hot.water + essentials + bed.linens 
   )
   
   predictions_list <- list()
@@ -106,7 +106,7 @@ eval2025q1$residuals
 ggplot(eval2025q1$long, aes(x = Fold, y = RMSE, group = Model, color = Model)) +
   geom_line(size = 1) +
   geom_point(size = 3) +
-  labs(title = "RMSE Across 5 Folds for Each Model (2024)", x = "Fold", y = "RMSE") +
+  labs(title = "RMSE Across 5 Folds for Each Model (2025q1)", x = "Fold", y = "RMSE") +
   theme_minimal()
 
 ggplot(eval2025q1$long, aes(x = Model, y = RMSE, fill = Model)) +
@@ -165,13 +165,13 @@ rmse_all_2025q1 <- rbind(eval2025q1$long, lasso2025q1_df)
 # Plot combined RMSEs
 ggplot(rmse_all_2025q1, aes(x = Fold, y = as.numeric(RMSE), group = Model, color = Model)) +
   geom_line(size = 1) + geom_point(size = 2) +
-  labs(title = "RMSE Across 5 Folds (2024)", y = "RMSE", x = "Fold") +
+  labs(title = "RMSE Across 5 Folds (2025q1)", y = "RMSE", x = "Fold") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ggplot(rmse_all_2025q1, aes(x = Model, y = RMSE, fill = Model)) +
   geom_boxplot() +
-  labs(title = "RMSE Distribution Across Models (2024)", x = "Model", y = "RMSE") +
+  labs(title = "RMSE Distribution Across Models (2025q1)", x = "Model", y = "RMSE") +
   theme_minimal()
 
 #------------------------------- RANDOM FOREST ---------------------------------
